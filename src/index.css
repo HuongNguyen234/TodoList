@@ -11,3 +11,49 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.line-title{
+  background-color: rgb(128, 122, 122);
+  height: 2px;
+}
+
+.nameframe{
+  color: #777;
+  font-size: 18px;
+}
+
+.tool-nav{
+  display: flex;
+}
+
+.search-group{
+  width: auto;
+}
+
+.select-group{
+  display: flex;
+}
+
+.form-select{
+  width: auto;
+}
+
+.addtask{
+  display: flex;
+  flex-direction: column;
+}
+
+.addtask-detail{
+  display: flex;
+  float: right;
+  margin-left: auto;
+  margin-right: 22px;
+}
+
+.addtask-button{
+  margin-bottom: 10px;
+}
+
+.hidden{
+  display: none;
+}
