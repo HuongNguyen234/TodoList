@@ -3,7 +3,6 @@ import HeaderApp from './component/HeaderApp';
 import NavContent from './component/nav-content';
 import FormList from './component/FormList';
 import { Component } from 'react';
-import items from './mock/data';
 import _ from 'lodash';
 
 class App extends Component {
@@ -11,14 +10,13 @@ class App extends Component {
     super(props);
 
     this.state = {
-      items : items,
+      items : [],
       isFormToggle : false,
       strSearch : null,
       orderBy: 'name',
       orderDir: 'asc',
       isSelectItem : null
     };
-    this.handleToggleForm = this.handleToggleForm.bind(this);
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.handleSort = this.handleSort.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -26,9 +24,18 @@ class App extends Component {
     this.handleEdit = this.handleEdit.bind(this);
   }
 
-  handleToggleForm(){
+  componentWillMount(){
+    let i = JSON.parse(localStorage.getItem("task"));
     this.setState({
-      isFormToggle: !this.state.isFormToggle
+      items: i
+    })
+    // localStorage.getItem("task", JSON.stringify(this.state.items))
+  }
+
+  handleToggleForm = () => {
+    this.setState({
+      isFormToggle: !this.state.isFormToggle,
+      isSelectItem : null
     });
   }
 
@@ -60,15 +67,28 @@ class App extends Component {
     this.setState({
       items : items
     })
+
+    localStorage.setItem("task", JSON.stringify(this.state.items));
   }
 
   handleSubmit(item){
     let i = this.state.items;
+    console.log(item)
+    if(item.id !== ''){ //edit
+      console.log("edit")
+      i = _.reject(i, { id: item.id});
+      
+    } else{
+      const { v4: uuidv4 } = require('uuid');
+      item.id = uuidv4();
+    }
     i.push(item);
+    
     this.setState({
       items: i, 
       isFormToggle : false,
     });
+    localStorage.setItem("task", JSON.stringify(i));
   }
 
   handleEdit(item1){
@@ -79,7 +99,7 @@ class App extends Component {
   }
 
   render() {
-    const itemOrigin = [...this.state.items];
+    let itemOrigin = [...this.state.items];
     let items = itemOrigin;
     const search  = this.state.strSearch;
     let {isFormToggle, orderBy, orderDir} = this.state;
